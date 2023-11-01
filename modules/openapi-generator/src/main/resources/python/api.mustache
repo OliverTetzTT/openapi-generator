@@ -142,9 +142,12 @@ class {{classname}}:
             else:
                 _query_params.append(('{{baseName}}', {{paramName}}))
             {{/isDate}}
-            {{^isDateTime}}{{^isDate}}
+            {{#isExplode}}
+            _query_params.extend((k, v) for k, v in _params['{{paramName}}'].to_dict().items())
+            {{/isExplode}}
+            {{^isDateTime}}{{^isDate}}{{^isExplode}}
             _query_params.append(('{{baseName}}', {{paramName}}{{#isEnumRef}}.value{{/isEnumRef}}))
-            {{/isDate}}{{/isDateTime}}
+            {{/isExplode}}{{/isDate}}{{/isDateTime}}
 {{/queryParams}}
         # process the header parameters
 {{#headerParams}}
